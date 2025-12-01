@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styles from './MiniChart.module.css';
+import styles from './Minichart.module.css';
 import { BinanceService } from '../../../services/binance';
 
 const MiniChart = ({ symbol = 'BTCUSDT', interval = '1h', limit = 24, showInfo = true, height = 100 }) => {
