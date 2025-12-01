@@ -1,0 +1,498 @@
+/* pages/Wallet/Wallet.module.css */
+.walletPage {
+    min-height: 100vh;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: var(--space-lg);
+}
+
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    gap: var(--space-md);
+}
+
+.loadingSpinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--bg-glass-light);
+    border-left: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--bg-glass-light);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.brandName {
+    font-weight: 700;
+    font-size: var(--font-size-2xl);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.logoIcon {
+    font-size: var(--font-size-2xl);
+}
+
+.headerActions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.navButton {
+    background: var(--bg-glass-light);
+    border: 1px solid var(--bg-glass-light);
+    color: var(--text-primary);
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-weight: 500;
+}
+
+.navButton:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-1px);
+}
+
+/* Portfolio Section */
+.portfolioSection {
+    margin-bottom: var(--space-xl);
+}
+
+.portfolioCard {
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--bg-glass-light);
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
+}
+
+.portfolioHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+}
+
+.portfolioHeader h2 {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    color: var(--text-primary);
+}
+
+.portfolioActions {
+    display: flex;
+    gap: var(--space-md);
+}
+
+.actionButton {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all var(--transition-fast);
+}
+
+.actionButton:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.portfolioValue {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+}
+
+.totalValue {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: var(--space-sm);
+}
+
+.pnlSection {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+    align-items: center;
+}
+
+.pnlValue, .pnlPercent {
+    font-weight: 600;
+    font-size: var(--font-size-lg);
+}
+
+.balanceBreakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+}
+
+.balanceItem {
+    text-align: center;
+    padding: var(--space-lg);
+    background: var(--bg-glass-light);
+    border-radius: var(--radius-lg);
+}
+
+.balanceLabel {
+    display: block;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-xs);
+}
+
+.balanceAmount {
+    display: block;
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Tab Navigation */
+.tabNavigation {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--bg-glass-light);
+    padding-bottom: var(--space-sm);
+}
+
+.tabButton {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: var(--space-md) var(--space-lg);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.tabButton:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tabButton.active {
+    color: var(--primary);
+    background: rgba(59, 130, 246, 0.1);
+    border-bottom: 2px solid var(--primary);
+}
+
+/* Tab Content */
+.tabContent {
+    min-height: 400px;
+}
+
+.assetsOverview h3,
+.transactionsHistory h3,
+.performanceView h3 {
+    margin-bottom: var(--space-lg);
+    font-size: var(--font-size-xl);
+    color: var(--text-primary);
+}
+
+/* Tables */
+.assetsTable,
+.transactionsTable {
+    background: var(--bg-glass);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.tableHeader {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    background: var(--bg-glass-light);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.assetRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    border-bottom: 1px solid var(--bg-glass-light);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.assetRow:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.assetRow:last-child {
+    border-bottom: none;
+}
+
+.transactionRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    border-bottom: 1px solid var(--bg-glass-light);
+}
+
+.transactionRow:last-child {
+    border-bottom: none;
+}
+
+/* Specific column styles */
+.assetName {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.assetAmount {
+    color: var(--text-secondary);
+}
+
+.assetPrice, .assetValue {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.pnlColumn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.pnlValue, .pnlPercent {
+    font-weight: 600;
+}
+
+.change24h {
+    font-weight: 600;
+}
+
+/* Transaction types */
+.txType.deposit {
+    color: var(--success);
+}
+
+.txType.withdrawal {
+    color: var(--error);
+}
+
+.txType.buy {
+    color: var(--success);
+}
+
+.txType.sell {
+    color: var(--error);
+}
+
+.txStatus.completed {
+    color: var(--success);
+}
+
+.txStatus.pending {
+    color: var(--warning);
+}
+
+.txStatus.failed {
+    color: var(--error);
+}
+
+/* Performance Metrics */
+.performanceMetrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+}
+
+.metricCard {
+    background: var(--bg-glass);
+    padding: var(--space-xl);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    border: 1px solid var(--bg-glass-light);
+}
+
+.metricLabel {
+    display: block;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.metricValue {
+    display: block;
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+}
+
+.metricChange {
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+}
+
+/* Allocation Chart */
+.allocationSection {
+    margin-top: var(--space-xl);
+}
+
+.allocationSection h4 {
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+}
+
+.allocationChart {
+    display: flex;
+    height: 60px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--bg-glass-light);
+}
+
+.allocationItem {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    position: relative;
+    cursor: pointer;
+}
+
+.allocationItem:hover {
+    transform: scale(1.05);
+    z-index: 2;
+}
+
+.allocationLabel {
+    color: white;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    padding: var(--space-xs);
+    text-align: center;
+}
+
+/* Empty States */
+.emptyState {
+    text-align: center;
+    padding: var(--space-2xl);
+    color: var(--text-muted);
+}
+
+.ctaButton {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: var(--space-md);
+    transition: all var(--transition-fast);
+}
+
+.ctaButton:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+/* Color Classes */
+.positive {
+    color: var(--success);
+}
+
+.negative {
+    color: var(--error);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .walletPage {
+        padding: var(--space-md);
+    }
+
+    .header {
+        flex-direction: column;
+        gap: var(--space-md);
+        align-items: flex-start;
+    }
+
+    .portfolioHeader {
+        flex-direction: column;
+        gap: var(--space-md);
+        align-items: flex-start;
+    }
+
+    .portfolioActions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .actionButton {
+        flex: 1;
+    }
+
+    .balanceBreakdown {
+        grid-template-columns: 1fr;
+    }
+
+    .tabNavigation {
+        flex-direction: column;
+    }
+
+    .performanceMetrics {
+        grid-template-columns: 1fr;
+    }
+
+    .tableHeader,
+    .assetRow,
+    .transactionRow {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+    }
+
+    .allocationChart {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .allocationItem {
+        height: 40px;
+    }
+}

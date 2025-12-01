@@ -1,0 +1,128 @@
+:root {
+  /* Trading Platform Colors - Professional, High-Contrast */
+  --primary: #1a73e8;          /* Strong blue for primary actions */
+  --primary-dark: #0d47a1;     /* Darker blue for hover states */
+  --primary-light: #4fc3f7;    /* Lighter blue for highlights */
+  
+  /* Market Status Colors */
+  --bullish: #00c853;          /* Green for gains/long positions */
+  --bearish: #f44336;          /* Red for losses/short positions */
+  --neutral: #ff9800;          /* Orange/yellow for neutral/flat */
+  --consolidation: #9c27b0;    /* Purple for consolidation zones */
+  
+  /* Background Colors - Dark Theme for Charts */
+  --bg-primary: #121826;       /* Main background - very dark blue/gray */
+  --bg-secondary: #1a2236;     /* Secondary panels */
+  --bg-tertiary: #222d45;      /* Tertiary/alternating rows */
+  --bg-card: rgba(26, 34, 54, 0.9); /* Card backgrounds */
+  --bg-toolbar: #1e2a44;       /* Toolbar/header background */
+  
+  /* Chart/Grid Specific */
+  --grid-line: rgba(56, 68, 100, 0.5);      /* Grid lines */
+  --axis-line: rgba(100, 120, 180, 0.7);    /* Axis lines */
+  --chart-bg: rgba(18, 24, 38, 0.95);       /* Chart background */
+  
+  /* Text Colors - High Readability */
+  --text-primary: #e8eaed;     /* Primary text */
+  --text-secondary: #9aa0a6;   /* Secondary text (prices, labels) */
+  --text-muted: #5f6368;       /* Muted text (disabled, watermarks) */
+  --text-inverse: #121826;     /* Text on colored backgrounds */
+  
+  /* Status & Alert Colors */
+  --success: #4caf50;          /* Success/confirmed orders */
+  --warning: #ffb300;          /* Warning/margin calls */
+  --error: #f44336;            /* Error/failed orders */
+  --info: #2196f3;             /* Info/notifications */
+  
+  /* Order Type Colors */
+  --order-buy: rgba(0, 200, 83, 0.15);      /* Buy order highlight */
+  --order-sell: rgba(244, 67, 54, 0.15);    /* Sell order highlight */
+  --order-limit: rgba(33, 150, 243, 0.15);  /* Limit order */
+  --order-market: rgba(255, 179, 0, 0.15);  /* Market order */
+  
+  /* Gradients - Trading Specific */
+  --gradient-bullish: linear-gradient(135deg, #00c853 0%, #64dd17 100%);
+  --gradient-bearish: linear-gradient(135deg, #f44336 0%, #ff5252 100%);
+  --gradient-primary: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+  --gradient-chart: linear-gradient(180deg, rgba(26, 34, 54, 0.8) 0%, rgba(18, 24, 38, 0.95) 100%);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-depth: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 8px 16px rgba(0, 0, 0, 0.3);
+  
+  /* Border Radius */
+  --radius-sm: 4px;            /* Small elements, badges */
+  --radius-md: 6px;            /* Buttons, inputs */
+  --radius-lg: 8px;            /* Cards, panels */
+  --radius-xl: 12px;           /* Modals, dialogs */
+  
+  /* Spacing */
+  --space-xs: 2px;             /* Chart elements spacing */
+  --space-sm: 4px;             /* Small padding */
+  --space-md: 8px;             /* Standard padding */
+  --space-lg: 12px;            /* Large padding */
+  --space-xl: 16px;            /* Extra large */
+  --space-2xl: 24px;           /* Section spacing */
+  
+  /* Typography - Monospaced for numbers */
+  --font-family: 'Roboto', 'Segoe UI', sans-serif;
+  --font-family-mono: 'Roboto Mono', 'Consolas', monospace; /* For prices */
+  --font-size-xs: 11px;        /* Small labels */
+  --font-size-sm: 12px;        /* Chart labels */
+  --font-size-base: 14px;      /* Body text */
+  --font-size-lg: 16px;        /* Headers */
+  --font-size-xl: 20px;        /* Prices */
+  --font-size-2xl: 24px;       /* Large headers */
+  --font-size-3xl: 32px;       /* Main indicators */
+  
+  /* Transitions */
+  --transition-fast: 0.1s ease-out;   /* Price updates */
+  --transition-normal: 0.2s ease-out; /* UI interactions */
+  --transition-slow: 0.3s ease-out;   /* Theme changes */
+  
+  /* Chart Line Widths */
+  --line-thin: 1px;
+  --line-normal: 1.5px;
+  --line-thick: 2px;
+  --line-very-thick: 3px;
+  
+  /* Opacity Levels */
+  --opacity-disabled: 0.4;
+  --opacity-hover: 0.8;
+  --opacity-active: 1;
+}
+
+/* Optional: Light theme variables for trading */
+.light-theme {
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f3f4;
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --bg-toolbar: #ffffff;
+  
+  --text-primary: #202124;
+  --text-secondary: #5f6368;
+  --text-muted: #9aa0a6;
+  --text-inverse: #ffffff;
+  
+  --grid-line: rgba(218, 220, 224, 0.8);
+  --axis-line: rgba(154, 160, 166, 0.7);
+  
+  --shadow-sm: 0 1px 2px rgba(60, 64, 67, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(60, 64, 67, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(60, 64, 67, 0.1);
+}
+
+/* Additional utility classes for trading elements */
+.bg-bullish { background-color: var(--bullish); }
+.text-bullish { color: var(--bullish); }
+.border-bullish { border-color: var(--bullish); }
+
+.bg-bearish { background-color: var(--bearish); }
+.text-bearish { color: var(--bearish); }
+.border-bearish { border-color: var(--bearish); }
+
+.font-mono { font-family: var(--font-family-mono); }
+.font-tabular { font-variant-numeric: tabular-nums; } /* Aligns numbers */
