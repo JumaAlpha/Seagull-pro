@@ -5,7 +5,7 @@ import { BinanceService } from '../../services/binance';
 import { WalletService } from '../../services/wallet';
 import TradingChart from '../../components/trading/TradingChart/TradingChart';
 import OrderBook from '../../components/trading/OrderBook/OrderBook';
-import MiniChart from '../../components/trading/MiniChart/MiniChart'; // You'll need to create this
+import MiniChart from '../../components/trading/Minichart/MiniChart'; // You'll need to create this
 
 const Trading = () => {
     const { symbol = 'BTCUSDT' } = useParams();
