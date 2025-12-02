@@ -19,58 +19,53 @@
 }
 
 /* ===== MAIN CONTAINER ===== */
+/* ========================================= */
+/* TRADING CHART MODULE - MOBILE OPTIMIZED */
+/* ========================================= */
+
+/* ===== MAIN CONTAINER ===== */
 .tradingChartContainer {
   width: 100%;
   height: 100%;
-  background: var(--chart-gradient);
-  border-radius: 12px;
+  background: #131722;
+  border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(42, 46, 57, 0.5);
   position: relative;
 }
 
-/* ===== CONTROL PANEL ===== */
+/* ===== DESKTOP CONTROL PANEL ===== */
 .chartControlPanel {
-  padding: 12px 16px;
-  background: linear-gradient(135deg, #1a1e29 0%, #1e222d 100%);
+  padding: 8px 12px;
+  background: #1a1e29;
   border-bottom: 1px solid rgba(42, 46, 57, 0.8);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
   box-sizing: border-box;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
   z-index: 10;
 }
 
-/* Main Controls Container */
+/* Main Controls - Always in ROW */
 .chartMainControls {
   display: flex;
   align-items: center;
   gap: 16px;
   width: 100%;
   overflow-x: auto;
-  padding-bottom: 4px;
-  scrollbar-width: thin;
-  scrollbar-color: #363c4e #1e222d;
+  flex-wrap: nowrap;
+  padding: 4px 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .chartMainControls::-webkit-scrollbar {
-  height: 3px;
+  display: none;
 }
 
-.chartMainControls::-webkit-scrollbar-track {
-  background: #1e222d;
-  border-radius: 2px;
-}
-
-.chartMainControls::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #363c4e 0%, #2962ff 100%);
-  border-radius: 2px;
-}
-
-/* Control Group */
+/* Control Group - Compact */
 .chartControlGroup {
   display: flex;
   align-items: center;
@@ -86,107 +81,69 @@
   letter-spacing: 0.8px;
   white-space: nowrap;
   opacity: 0.9;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-width: 32px;
 }
 
-/* Button Groups */
+/* Button Groups - Very Compact */
 .chartButtonGroup {
   display: flex;
   gap: 4px;
   flex-wrap: nowrap;
   background: rgba(42, 46, 57, 0.3);
-  padding: 6px;
-  border-radius: 8px;
+  padding: 4px;
+  border-radius: 6px;
   border: 1px solid rgba(117, 134, 150, 0.1);
 }
 
-/* Compact Icon Buttons */
+/* Ultra Compact Icon Buttons */
 .chartIconButton {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  padding: 6px 10px;
-  background: linear-gradient(135deg, rgba(42, 46, 57, 0.8) 0%, rgba(36, 40, 51, 0.8) 100%);
+  padding: 4px 8px;
+  background: rgba(42, 46, 57, 0.8);
   border: 1px solid rgba(117, 134, 150, 0.2);
   color: #a1a7bb;
-  border-radius: 6px;
-  font-size: 12px;
+  border-radius: 4px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   white-space: nowrap;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
-  min-width: 50px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-.chartIconButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transition: left 0.5s;
-}
-
-.chartIconButton:hover::before {
-  left: 100%;
+  min-width: 40px;
+  height: 28px;
 }
 
 .chartIconButton:hover {
-  background: linear-gradient(135deg, rgba(54, 60, 78, 0.9) 0%, rgba(48, 52, 68, 0.9) 100%);
+  background: rgba(54, 60, 78, 0.9);
   color: #ffffff;
-  transform: translateY(-2px);
   border-color: rgba(117, 134, 150, 0.4);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.chartIconButton:active {
-  transform: translateY(0);
-  transition: transform 0.1s;
 }
 
 .chartIconButton.active {
-  background: linear-gradient(135deg, #2962ff 0%, #1e56ff 100%);
+  background: #2962ff;
   border-color: #2962ff;
   color: #ffffff;
-  box-shadow: 0 6px 24px rgba(41, 98, 255, 0.4);
 }
 
 .chartIconButton.indicatorActive {
-  background: linear-gradient(135deg, rgba(41, 98, 255, 0.25) 0%, rgba(41, 98, 255, 0.15) 100%);
+  background: rgba(41, 98, 255, 0.25);
   border-color: rgba(41, 98, 255, 0.5);
   color: #64b5f6;
-  position: relative;
 }
 
-.chartIconButton.indicatorActive::after {
-  content: '';
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 5px;
-  height: 5px;
-  background: #64b5f6;
-  border-radius: 50%;
-  box-shadow: 0 0 8px #64b5f6;
-  animation: chartPulse 2s infinite;
-}
-
-@keyframes chartPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.2); }
-}
-
-/* Button Icons */
 .chartButtonIcon {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1;
+}
+
+.chartButtonText {
+  font-size: 10px;
+  font-weight: 600;
 }
 
 /* ===== CHART AREA ===== */
@@ -195,9 +152,9 @@
   position: relative;
   background: #131722;
   overflow: hidden;
+  min-height: 0; /* Critical for flex child */
 }
 
-/* TradingView Widget Container */
 .tradingViewWidgetContainer {
   width: 100%;
   height: 100%;
@@ -209,7 +166,264 @@
   opacity: 0.3;
 }
 
-/* ===== PLACEHOLDER STATES ===== */
+/* ===== MOBILE CONTROLS TOGGLE ===== */
+.mobileControlsToggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background: rgba(26, 30, 41, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--chart-text-primary);
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 20;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+}
+
+/* ===== MOBILE FLOATING CONTROLS ===== */
+.mobileFloatingControls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(19, 23, 34, 0.98);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(10px);
+  animation: slideInUp 0.3s ease;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobileControlsHeader {
+  padding: 16px;
+  background: #1a1e29;
+  border-bottom: 1px solid rgba(42, 46, 57, 0.8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.closeMobileControls {
+  background: none;
+  border: none;
+  color: #a1a7bb;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.mobileControlsGrid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mobileControlSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobileControlLabel {
+  color: #758696;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.mobileButtonRow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.mobileButtonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.mobileControlButton {
+  padding: 8px 12px;
+  background: rgba(42, 46, 57, 0.6);
+  border: 1px solid rgba(117, 134, 150, 0.2);
+  color: #a1a7bb;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.mobileControlButton:hover {
+  background: rgba(54, 60, 78, 0.8);
+}
+
+.mobileControlButton.active {
+  background: #2962ff;
+  border-color: #2962ff;
+  color: #ffffff;
+}
+
+.mobileControlButton.indicatorActive {
+  background: rgba(41, 98, 255, 0.3);
+  border-color: rgba(41, 98, 255, 0.6);
+  color: #64b5f6;
+}
+
+/* ===== QUICK TIME FRAME BAR (Mobile Bottom) ===== */
+.quickTimeFrameBar {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  gap: 4px;
+  background: rgba(26, 30, 41, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 4px;
+  backdrop-filter: blur(10px);
+  z-index: 5;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.quickTimeFrameBar::-webkit-scrollbar {
+  display: none;
+}
+
+.quickTimeButton {
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  color: #a1a7bb;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.quickTimeButton.active {
+  background: #2962ff;
+  color: white;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Desktop: Show full controls */
+@media (min-width: 1025px) {
+  .chartControlPanel {
+    height: 52px;
+  }
+  
+  .chartMainControls {
+    justify-content: flex-start;
+  }
+  
+  .chartControlGroup {
+    flex: 0 0 auto;
+  }
+}
+
+/* Tablet: Show compact controls */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .chartControlPanel {
+    height: 48px;
+    padding: 6px 10px;
+  }
+  
+  .chartControlLabel {
+    font-size: 10px;
+    min-width: 28px;
+  }
+  
+  .chartIconButton {
+    min-width: 36px;
+    height: 26px;
+    padding: 3px 6px;
+    font-size: 10px;
+  }
+  
+  .chartButtonIcon {
+    font-size: 11px;
+  }
+  
+  .chartButtonText {
+    font-size: 9px;
+  }
+}
+
+/* Mobile: Hide desktop controls, show toggle */
+@media (max-width: 768px) {
+  .chartControlPanel {
+    display: none; /* Hide desktop controls on mobile */
+  }
+  
+  .mobileControlsToggle {
+    display: flex; /* Show mobile toggle button */
+  }
+  
+  .quickTimeFrameBar {
+    display: flex; /* Show quick time bar */
+  }
+  
+  /* Make chart area take maximum space */
+  .chartAreaWrapper {
+    height: calc(100% - 40px); /* Account for quick time bar */
+  }
+}
+
+/* Small Mobile: Further optimization */
+@media (max-width: 480px) {
+  .quickTimeFrameBar {
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    padding: 3px;
+  }
+  
+  .quickTimeButton {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+  
+  .mobileControlsToggle {
+    top: 5px;
+    right: 5px;
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+}
+
+/* ===== PLACEHOLDER STATES (Keep from previous) ===== */
 .chartPlaceholderState {
   position: absolute;
   top: 0;
@@ -225,40 +439,23 @@
 
 .placeholderContentWrapper {
   text-align: center;
-  padding: 32px;
-  max-width: 400px;
+  padding: 24px;
+  max-width: 320px;
   background: rgba(30, 34, 45, 0.8);
   border-radius: 12px;
   border: 1px solid rgba(42, 46, 57, 0.5);
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-/* Loading Spinner */
 .chartLoadingSpinner {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border: 3px solid transparent;
   border-top-color: #2962ff;
   border-right-color: #2962ff;
   border-radius: 50%;
   margin: 0 auto 16px;
   animation: chartSpin 1s linear infinite;
-  position: relative;
-}
-
-.chartLoadingSpinner::before {
-  content: '';
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  border: 3px solid transparent;
-  border-radius: 50%;
-  border-top-color: rgba(41, 98, 255, 0.3);
-  border-right-color: rgba(41, 98, 255, 0.3);
-  animation: chartSpin 1.5s linear infinite reverse;
 }
 
 @keyframes chartSpin {
@@ -266,425 +463,23 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Error State */
 .chartErrorIcon {
-  font-size: 40px;
+  font-size: 36px;
   margin-bottom: 16px;
   color: #ff6b6b;
-  animation: chartPulse 2s infinite;
-}
-
-.chartPlaceholderState h3 {
-  color: #ffffff;
-  margin: 0 0 8px 0;
-  font-size: 18px;
-  font-weight: 700;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-.chartPlaceholderState p {
-  color: #a1a7bb;
-  margin: 0 0 16px 0;
-  font-size: 14px;
-  line-height: 1.4;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .chartRetrySection {
   margin: 16px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
 }
 
 .chartRetryButton {
-  padding: 10px 24px;
+  padding: 8px 20px;
   background: linear-gradient(135deg, #2962ff 0%, #1e56ff 100%);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 6px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  position: relative;
-  overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-.chartRetryButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.6s;
-}
-
-.chartRetryButton:hover::before {
-  left: 100%;
-}
-
-.chartRetryButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(41, 98, 255, 0.4);
-}
-
-.chartRetryButton:active {
-  transform: translateY(0);
-}
-
-/* ===== TIME SELECTOR OVERLAY (Mobile) ===== */
-.chartTimeSelector {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  display: flex;
-  gap: 4px;
-  background: rgba(26, 30, 41, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 4px;
-  backdrop-filter: blur(10px);
-  z-index: 5;
-}
-
-.chartTimeButton {
-  padding: 6px 12px;
-  background: transparent;
-  border: none;
-  color: var(--chart-text-tertiary);
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 6px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-.chartTimeButton.active {
-  background: var(--chart-primary);
-  color: white;
-}
-
-/* ===== FULLSCREEN MODE ===== */
-.tradingChartContainer.fullscreen {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  z-index: 9999 !important;
-  border-radius: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.chartFullscreenButton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(26, 30, 41, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--chart-text-primary);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  z-index: 10;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
-}
-
-.chartFullscreenButton:hover {
-  background: var(--chart-primary);
-  color: white;
-}
-
-/* ===== RESPONSIVE DESIGN ===== */
-
-/* Tablet & Mobile (≤ 1024px) */
-@media (max-width: 1024px) {
-  .chartControlPanel {
-    padding: 10px 12px;
-  }
-  
-  .chartMainControls {
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  
-  .chartControlGroup {
-    flex: 1;
-    min-width: 200px;
-  }
-  
-  .chartButtonGroup {
-    flex-wrap: wrap;
-  }
-  
-  .chartIconButton {
-    min-width: 44px;
-    padding: 5px 8px;
-    font-size: 11px;
-  }
-  
-  .chartButtonIcon {
-    font-size: 12px;
-  }
-}
-
-/* Mobile (≤ 768px) */
-@media (max-width: 768px) {
-  .tradingChartContainer {
-    border-radius: 8px;
-  }
-  
-  .chartControlPanel {
-    padding: 8px 10px;
-  }
-  
-  .chartMainControls {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-  }
-  
-  .chartControlGroup {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-    min-width: auto;
-  }
-  
-  .chartControlLabel {
-    font-size: 10px;
-  }
-  
-  .chartButtonGroup {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    padding: 4px;
-  }
-  
-  .chartIconButton {
-    padding: 4px 8px;
-    font-size: 10px;
-    min-width: 40px;
-  }
-  
-  .chartButtonIcon {
-    font-size: 11px;
-  }
-  
-  .chartTimeSelector {
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    overflow-x: auto;
-    padding: 3px;
-  }
-  
-  .chartTimeButton {
-    padding: 4px 8px;
-    font-size: 11px;
-    white-space: nowrap;
-  }
-  
-  /* Hide fullscreen button on very small screens */
-  @media (max-width: 480px) {
-    .chartFullscreenButton {
-      display: none;
-    }
-  }
-}
-
-/* Landscape Mobile Optimization */
-@media (max-width: 768px) and (orientation: landscape) {
-  .chartControlPanel {
-    padding: 6px 8px;
-  }
-  
-  .chartMainControls {
-    flex-direction: row;
-    flex-wrap: nowrap;
-  }
-  
-  .chartControlGroup {
-    flex-direction: row;
-    flex: none;
-  }
-  
-  .chartControlLabel {
-    display: none;
-  }
-  
-  .chartIconButton {
-    min-width: 36px;
-    padding: 3px 6px;
-  }
-}
-
-/* ===== ACCESSIBILITY & PERFORMANCE ===== */
-
-/* High Contrast Mode Support */
-@media (prefers-contrast: high) {
-  .tradingChartContainer {
-    background: #000000;
-    border: 2px solid #ffffff;
-  }
-  
-  .chartControlPanel {
-    background: #000000;
-    border-bottom: 2px solid #ffffff;
-  }
-  
-  .chartButtonGroup {
-    background: #000000;
-    border: 2px solid #ffffff;
-  }
-  
-  .chartIconButton {
-    border: 2px solid #ffffff;
-  }
-  
-  .chartIconButton.active {
-    background: #0000ff;
-    border-color: #ffffff;
-  }
-  
-  .chartIconButton.indicatorActive {
-    background: #0000ff;
-    border-color: #ffffff;
-  }
-}
-
-/* Reduced Motion Support */
-@media (prefers-reduced-motion: reduce) {
-  .chartIconButton,
-  .chartRetryButton,
-  .chartFullscreenButton,
-  .chartTimeButton {
-    transition: none;
-  }
-  
-  .chartIconButton:hover,
-  .chartRetryButton:hover,
-  .chartFullscreenButton:hover,
-  .chartTimeButton:hover {
-    transform: none;
-  }
-  
-  .chartLoadingSpinner,
-  .chartIconButton.indicatorActive::after,
-  .chartErrorIcon {
-    animation: none;
-  }
-  
-  .chartIconButton::before,
-  .chartRetryButton::before {
-    display: none;
-  }
-}
-
-/* Dark Mode Optimization */
-@media (prefers-color-scheme: dark) {
-  .tradingChartContainer {
-    background: linear-gradient(135deg, #0a0c10 0%, #0f1117 100%);
-  }
-  
-  .chartControlPanel {
-    background: linear-gradient(135deg, #121620 0%, #161a24 100%);
-  }
-  
-  .chartButtonGroup {
-    background: rgba(42, 46, 57, 0.4);
-  }
-}
-
-/* Light Mode Support */
-@media (prefers-color-scheme: light) {
-  .tradingChartContainer {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    border-color: rgba(226, 232, 240, 0.8);
-  }
-  
-  .chartControlPanel {
-    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
-    border-bottom-color: rgba(226, 232, 240, 0.8);
-  }
-  
-  .chartButtonGroup {
-    background: rgba(241, 245, 249, 0.8);
-    border-color: rgba(148, 163, 184, 0.2);
-  }
-  
-  .chartIconButton {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
-    border-color: rgba(148, 163, 184, 0.3);
-    color: #475569;
-  }
-  
-  .chartIconButton:hover {
-    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
-    color: #1e293b;
-  }
-  
-  .chartIconButton.active {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    color: white;
-  }
-  
-  .chartAreaWrapper {
-    background: #f8fafc;
-  }
-  
-  .chartControlLabel {
-    color: #64748b;
-  }
-  
-  .chartPlaceholderState h3 {
-    color: #1e293b;
-  }
-  
-  .chartPlaceholderState p {
-    color: #64748b;
-  }
-}
-
-/* ===== PRINT STYLES ===== */
-@media print {
-  .chartControlPanel,
-  .chartFullscreenButton,
-  .chartTimeSelector {
-    display: none;
-  }
-  
-  .tradingChartContainer {
-    border: 1px solid #ccc;
-    box-shadow: none;
-    page-break-inside: avoid;
-  }
-}
-
-/* ===== TOUCH OPTIMIZATION ===== */
-@media (hover: none) and (pointer: coarse) {
-  .chartIconButton,
-  .chartRetryButton,
-  .chartFullscreenButton,
-  .chartTimeButton {
-    min-height: 44px;
-    min-width: 44px;
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  .chartIconButton:active {
-    background: var(--chart-primary);
-    transform: scale(0.98);
-  }
 }
