@@ -212,23 +212,35 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
     setChartType(type);
   };
 
+  const handleRetry = () => {
+    setIsLoading(true);
+    setError(null);
+    // Force re-initialization
+    setTimeout(() => {
+      if (containerRef.current) {
+        containerRef.current.innerHTML = '';
+        window.location.reload();
+      }
+    }, 100);
+  };
+
   return (
-    <div className={styles.tradingContainer} style={{ width: width, height: height }}>
-      <div className={styles.controlPanel}>
+    <div className={styles.tradingChartContainer} style={{ width: width, height: height }}>
+      <div className={styles.chartControlPanel}>
         {/* Main Controls Row - TIME, TYPE, INDICATORS */}
-        <div className={styles.mainControls}>
+        <div className={styles.chartMainControls}>
           {/* TIME Controls */}
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>TIME</span>
-            <div className={`${styles.buttonGroup} ${styles.timeButtons}`}>
+          <div className={styles.chartControlGroup}>
+            <span className={styles.chartControlLabel}>TIME</span>
+            <div className={`${styles.chartButtonGroup} ${styles.timeButtons}`}>
               {timeIntervals.map(interval => (
                 <button
                   key={interval.value}
-                  className={`${styles.iconButton} ${timeInterval === interval.value ? styles.active : ''}`}
+                  className={`${styles.chartIconButton} ${timeInterval === interval.value ? styles.active : ''}`}
                   onClick={() => handleTimeIntervalChange(interval.value)}
                   title={interval.label}
                 >
-                  <span className={styles.buttonIcon}>{interval.icon}</span>
+                  <span className={styles.chartButtonIcon}>{interval.icon}</span>
                   <span>{interval.label}</span>
                 </button>
               ))}
@@ -236,17 +248,17 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
           </div>
 
           {/* TYPE Controls */}
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>TYPE</span>
-            <div className={`${styles.buttonGroup} ${styles.typeButtons}`}>
+          <div className={styles.chartControlGroup}>
+            <span className={styles.chartControlLabel}>TYPE</span>
+            <div className={`${styles.chartButtonGroup} ${styles.typeButtons}`}>
               {chartTypes.map(type => (
                 <button
                   key={type.value}
-                  className={`${styles.iconButton} ${chartType === type.value ? styles.active : ''}`}
+                  className={`${styles.chartIconButton} ${chartType === type.value ? styles.active : ''}`}
                   onClick={() => handleChartTypeChange(type.value)}
                   title={type.label}
                 >
-                  <span className={styles.buttonIcon}>{type.icon}</span>
+                  <span className={styles.chartButtonIcon}>{type.icon}</span>
                   <span>{type.label}</span>
                 </button>
               ))}
@@ -254,17 +266,17 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
           </div>
 
           {/* INDICATORS Controls */}
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>INDICATORS</span>
-            <div className={`${styles.buttonGroup} ${styles.indicatorButtons}`}>
+          <div className={styles.chartControlGroup}>
+            <span className={styles.chartControlLabel}>INDICATORS</span>
+            <div className={`${styles.chartButtonGroup} ${styles.indicatorButtons}`}>
               {indicators.map(indicator => (
                 <button
                   key={indicator.id}
-                  className={`${styles.iconButton} ${activeIndicators[indicator.id] ? styles.indicatorActive : ''}`}
+                  className={`${styles.chartIconButton} ${activeIndicators[indicator.id] ? styles.indicatorActive : ''}`}
                   onClick={() => handleIndicatorToggle(indicator.id)}
                   title={indicator.name}
                 >
-                  <span className={styles.buttonIcon}>{indicator.icon}</span>
+                  <span className={styles.chartButtonIcon}>{indicator.icon}</span>
                   <span>{indicator.name}</span>
                 </button>
               ))}
@@ -274,12 +286,12 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
       </div>
 
       {/* Chart Area - Will expand to fill available space */}
-      <div className={styles.chartArea}>
+      <div className={styles.chartAreaWrapper}>
         {/* Loading State */}
         {isLoading && !error && (
-          <div className={styles.chartPlaceholder}>
-            <div className={styles.placeholderContent}>
-              <div className={styles.loadingSpinner}></div>
+          <div className={styles.chartPlaceholderState}>
+            <div className={styles.placeholderContentWrapper}>
+              <div className={styles.chartLoadingSpinner}></div>
               <h3>Loading Chart</h3>
               <p>Loading {symbol} price chart with selected indicators...</p>
             </div>
@@ -288,15 +300,15 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
 
         {/* Error State */}
         {error && (
-          <div className={styles.chartPlaceholder}>
-            <div className={styles.placeholderContent}>
-              <div className={styles.errorIcon}>⚠️</div>
+          <div className={styles.chartPlaceholderState}>
+            <div className={styles.placeholderContentWrapper}>
+              <div className={styles.chartErrorIcon}>⚠️</div>
               <h3>Chart Unavailable</h3>
               <p>Failed to load TradingView chart</p>
-              <div className={styles.retrySection}>
+              <div className={styles.chartRetrySection}>
                 <button 
-                  className={styles.retryButton}
-                  onClick={() => window.location.reload()}
+                  className={styles.chartRetryButton}
+                  onClick={handleRetry}
                 >
                   Retry
                 </button>
@@ -309,10 +321,35 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
         {!error && (
           <div 
             ref={containerRef}
-            className={`${styles.chartContainer} ${isLoading ? styles.loading : ''}`}
+            className={`${styles.tradingViewWidgetContainer} ${isLoading ? styles.loading : ''}`}
             style={{ width: '100%', height: '100%' }}
           />
         )}
+      </div>
+
+      {/* Optional: Fullscreen Button */}
+      <button 
+        className={styles.chartFullscreenButton}
+        onClick={() => {
+          const container = document.querySelector(`.${styles.tradingChartContainer}`);
+          container?.classList.toggle(styles.fullscreen);
+        }}
+        title="Toggle Fullscreen"
+      >
+        ⛶
+      </button>
+
+      {/* Optional: Time Selector for Mobile */}
+      <div className={styles.chartTimeSelector}>
+        {['1m', '5m', '15m', '30m', '1h', '4h', '1D'].map(tf => (
+          <button
+            key={tf}
+            className={`${styles.chartTimeButton} ${timeInterval === tf ? styles.active : ''}`}
+            onClick={() => setTimeInterval(tf)}
+          >
+            {tf}
+          </button>
+        ))}
       </div>
     </div>
   );
