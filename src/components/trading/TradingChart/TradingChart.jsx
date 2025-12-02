@@ -50,6 +50,7 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
   const loadTradingViewScript = useCallback(() => {
     return new Promise((resolve, reject) => {
       if (window.TradingView) {
+        setScriptLoaded(true);
         resolve();
         return;
       }
@@ -57,20 +58,35 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
       const script = document.createElement('script');
       script.src = 'https://s3.tradingview.com/tv.js';
       script.async = true;
-      script.onload = () => {
+      script.type = 'text/javascript';
+      
+      // Handle script load
+      const onLoad = () => {
+        script.removeEventListener('load', onLoad);
+        script.removeEventListener('error', onError);
         setScriptLoaded(true);
         resolve();
       };
-      script.onerror = () => {
+      
+      // Handle script error
+      const onError = () => {
+        script.removeEventListener('load', onLoad);
+        script.removeEventListener('error', onError);
         reject(new Error('Failed to load TradingView script'));
       };
+      
+      script.addEventListener('load', onLoad);
+      script.addEventListener('error', onError);
       
       document.head.appendChild(script);
     });
   }, []);
 
   const initializeChart = useCallback(() => {
-    if (!containerRef.current || !window.TradingView) return null;
+    if (!containerRef.current || !window.TradingView) {
+      console.error('Container or TradingView not available');
+      return null;
+    }
 
     // Simulate loading progress
     const progressInterval = setInterval(() => {
@@ -86,13 +102,21 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
     try {
       // Clear previous widget if exists
       if (widgetRef.current) {
-        widgetRef.current.remove();
+        try {
+          widgetRef.current.remove();
+        } catch (e) {
+          console.warn('Error removing previous widget:', e);
+        }
         widgetRef.current = null;
       }
 
-      // Create new widget
-      const widget = new window.TradingView.widget({
-        container_id: containerRef.current.id,
+      // Generate unique container ID
+      const containerId = `tradingview_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      containerRef.current.id = containerId;
+
+      // Create widget configuration
+      const widgetConfig = {
+        container_id: containerId,
         width: '100%',
         height: '100%',
         symbol: `BINANCE:${symbol}`,
@@ -107,13 +131,6 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
         enable_publishing: false,
         allow_symbol_change: false,
         hide_side_toolbar: false,
-        studies: [
-          ...(activeIndicators.BB ? ['BB@tv-basicstudies'] : []),
-          ...(activeIndicators.RSI ? ['RSI@tv-basicstudies'] : []),
-          ...(activeIndicators.MACD ? ['MACD@tv-basicstudies'] : []),
-          ...(activeIndicators.Volume ? ['Volume@tv-basicstudies'] : []),
-          ...(activeIndicators.MA ? ['MASimple@tv-basicstudies'] : []),
-        ],
         disabled_features: [
           'use_localstorage_for_settings',
           'header_symbol_search',
@@ -124,32 +141,88 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
           'study_templates',
           'hide_last_na_study_output'
         ],
-        loading_screen: { backgroundColor: '#1e1e2e' },
+        loading_screen: { 
+          backgroundColor: '#1e1e2e',
+          foregroundColor: '#1e1e2e'
+        },
         autosize: true,
         overrides: {
           'paneProperties.background': '#1e1e2e',
           'paneProperties.vertGridProperties.color': '#2d2d3d',
           'paneProperties.horzGridProperties.color': '#2d2d3d',
         },
+        studies_overrides: {
+          'volume.volume.color.0': 'rgba(239, 83, 80, 0.5)',
+          'volume.volume.color.1': 'rgba(38, 166, 154, 0.5)',
+          'volume.volume.transparency': 70,
+        },
         library_path: 'https://s3.tradingview.com/tv.js',
-      });
+      };
 
+      console.log('Creating TradingView widget with config:', widgetConfig);
+
+      // Create the widget
+      const widget = new window.TradingView.widget(widgetConfig);
       widgetRef.current = widget;
 
-      // Handle widget ready event
-      widget.onChartReady(() => {
-        clearInterval(progressInterval);
-        setLoadProgress(100);
-        setTimeout(() => {
+      // Add indicators after a delay to ensure widget is initialized
+      const addIndicators = () => {
+        try {
+          // Get chart widget
+          const chart = widget.chart();
+          if (!chart) {
+            console.warn('Chart not available yet, retrying...');
+            setTimeout(addIndicators, 500);
+            return;
+          }
+
+          // Add initial indicators
+          Object.entries(activeIndicators).forEach(([indicatorId, isActive]) => {
+            if (isActive) {
+              const studyConfig = indicators.find(i => i.id === indicatorId);
+              if (studyConfig) {
+                try {
+                  chart.createStudy(
+                    studyConfig.study,
+                    false,
+                    false,
+                    [],
+                    (studyId) => {
+                      console.log(`Indicator ${indicatorId} added:`, studyId);
+                    }
+                  );
+                } catch (studyErr) {
+                  console.warn(`Failed to add indicator ${indicatorId}:`, studyErr);
+                }
+              }
+            }
+          });
+
+          // Mark as ready
+          clearInterval(progressInterval);
+          setLoadProgress(100);
+          setTimeout(() => {
+            setIsLoading(false);
+            setIsChartReady(true);
+          }, 300);
+        } catch (chartErr) {
+          console.warn('Error accessing chart:', chartErr);
+          // Still mark as ready even if indicator addition fails
+          clearInterval(progressInterval);
+          setLoadProgress(100);
           setIsLoading(false);
           setIsChartReady(true);
-        }, 300);
-      });
+        }
+      };
+
+      // Wait for widget to be ready
+      setTimeout(addIndicators, 1000);
 
       return widget;
     } catch (err) {
+      console.error('Error initializing chart:', err);
       clearInterval(progressInterval);
-      setError(err.message);
+      setError(`Failed to initialize chart: ${err.message}`);
       setIsLoading(false);
       return null;
     }
@@ -178,8 +251,9 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
           }
         }, 100);
       } catch (err) {
+        console.error('Error loading chart:', err);
         if (mounted) {
-          setError(err.message);
+          setError(err.message || 'Failed to load TradingView chart');
           setIsLoading(false);
         }
       }
@@ -203,68 +277,125 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
     };
   }, [symbol, loadTradingViewScript, initializeChart]);
 
-  // Debounced update for chart settings to avoid rapid re-renders
+  // Handle chart updates separately
   useEffect(() => {
     if (!widgetRef.current || !isChartReady) return;
 
-    const timeoutId = setTimeout(() => {
+    const updateChart = async () => {
       try {
-        if (widgetRef.current) {
-          // Update chart type
-          widgetRef.current.chart().setChartType(
-            chartType === 'candlestick' ? 'Candles' :
-            chartType === 'line' ? 'Line' :
-            chartType === 'area' ? 'Area' : 'Bars'
-          );
+        const chart = widgetRef.current.chart();
+        if (!chart) {
+          console.warn('Chart not available for updates');
+          return;
+        }
 
-          // Update interval
-          widgetRef.current.chart().setResolution(timeInterval, () => {
-            console.log(`Interval changed to ${timeInterval}`);
-          });
+        // Update interval
+        chart.setResolution(timeInterval, () => {
+          console.log(`Interval updated to ${timeInterval}`);
+        });
 
-          // Update indicators
-          const chart = widgetRef.current.chart();
-          
-          // Remove all studies first
-          chart.getAllStudies().forEach(study => {
+        // Update chart type
+        const chartTypeMap = {
+          'candlestick': 'Candles',
+          'line': 'Line',
+          'area': 'Area',
+          'bars': 'Bars'
+        };
+        chart.setChartType(chartTypeMap[chartType]);
+
+      } catch (err) {
+        console.warn('Error updating chart:', err);
+      }
+    };
+
+    const timeoutId = setTimeout(updateChart, 300);
+    return () => clearTimeout(timeoutId);
+  }, [timeInterval, chartType, isChartReady]);
+
+  // Handle indicator updates
+  useEffect(() => {
+    if (!widgetRef.current || !isChartReady) return;
+
+    const updateIndicators = async () => {
+      try {
+        const chart = widgetRef.current.chart();
+        if (!chart) {
+          console.warn('Chart not available for indicator updates');
+          return;
+        }
+
+        // Get all current studies
+        const currentStudies = chart.getAllStudies();
+        
+        // Remove all studies
+        currentStudies.forEach(study => {
+          try {
             chart.removeEntity(study.id);
-          });
+          } catch (e) {
+            console.warn(`Error removing study ${study.id}:`, e);
+          }
+        });
 
-          // Add selected studies
-          Object.entries(activeIndicators).forEach(([indicator, isActive]) => {
-            if (isActive) {
-              const studyConfig = indicators.find(i => i.id === indicator);
-              if (studyConfig) {
+        // Add selected indicators
+        Object.entries(activeIndicators).forEach(([indicatorId, isActive]) => {
+          if (isActive) {
+            const studyConfig = indicators.find(i => i.id === indicatorId);
+            if (studyConfig) {
+              try {
                 chart.createStudy(
                   studyConfig.study,
                   false,
                   false,
                   [],
                   (studyId) => {
-                    console.log(`${indicator} added:`, studyId);
+                    console.log(`Indicator ${indicatorId} updated:`, studyId);
                   }
                 );
+              } catch (studyErr) {
+                console.warn(`Failed to update indicator ${indicatorId}:`, studyErr);
               }
             }
-          });
-        }
+          }
+        });
       } catch (err) {
-        console.warn('Error updating chart:', err);
+        console.warn('Error updating indicators:', err);
       }
-    }, 300);
+    };
 
+    const timeoutId = setTimeout(updateIndicators, 300);
     return () => clearTimeout(timeoutId);
-  }, [timeInterval, chartType, activeIndicators, isChartReady]);
+  }, [activeIndicators, isChartReady]);
 
   const handleRetry = useCallback(() => {
     setError(null);
     setIsLoading(true);
+    setIsChartReady(false);
     setLoadProgress(0);
+    
+    // Clear existing container
+    if (containerRef.current) {
+      containerRef.current.innerHTML = '';
+    }
     
     setTimeout(() => {
       initializeChart();
     }, 500);
   }, [initializeChart]);
+
+  const handleTimeIntervalChange = useCallback((interval) => {
+    setTimeInterval(interval);
+  }, []);
+
+  const handleChartTypeChange = useCallback((type) => {
+    setChartType(type);
+  }, []);
+
+  const handleIndicatorToggle = useCallback((indicatorId) => {
+    setActiveIndicators(prev => ({
+      ...prev,
+      [indicatorId]: !prev[indicatorId]
+    }));
+  }, []);
 
   return (
     <div className={styles.tradingChartContainer} style={{ width: width, height: height }}>
@@ -279,7 +410,7 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
                 <button
                   key={interval.value}
                   className={`${styles.chartIconButton} ${timeInterval === interval.value ? styles.active : ''}`}
-                  onClick={() => setTimeInterval(interval.value)}
+                  onClick={() => handleTimeIntervalChange(interval.value)}
                   title={interval.label}
                   disabled={isLoading}
                 >
@@ -298,7 +429,7 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
                 <button
                   key={type.value}
                   className={`${styles.chartIconButton} ${chartType === type.value ? styles.active : ''}`}
-                  onClick={() => setChartType(type.value)}
+                  onClick={() => handleChartTypeChange(type.value)}
                   title={type.label}
                   disabled={isLoading}
                 >
@@ -317,10 +448,7 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
                 <button
                   key={indicator.id}
                   className={`${styles.chartIconButton} ${activeIndicators[indicator.id] ? styles.indicatorActive : ''}`}
-                  onClick={() => setActiveIndicators(prev => ({
-                    ...prev,
-                    [indicator.id]: !prev[indicator.id]
-                  }))}
+                  onClick={() => handleIndicatorToggle(indicator.id)}
                   title={indicator.name}
                   disabled={isLoading}
                 >
@@ -403,7 +531,6 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
         {/* Main Chart Container */}
         <div 
           ref={containerRef}
-          id={`tradingview_${symbol}`}
           className={`${styles.tradingViewWidgetContainer} ${isLoading ? styles.loading : ''} ${isChartReady ? styles.ready : ''}`}
           style={{ 
             width: '100%', 
@@ -437,7 +564,7 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
                     key={interval.value}
                     className={`${styles.mobileControlButton} ${timeInterval === interval.value ? styles.active : ''}`}
                     onClick={() => {
-                      setTimeInterval(interval.value);
+                      handleTimeIntervalChange(interval.value);
                       setShowMobileControls(false);
                     }}
                     disabled={isLoading}
@@ -457,7 +584,7 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
                     key={type.value}
                     className={`${styles.mobileControlButton} ${chartType === type.value ? styles.active : ''}`}
                     onClick={() => {
-                      setChartType(type.value);
+                      handleChartTypeChange(type.value);
                       setShowMobileControls(false);
                     }}
                     disabled={isLoading}
@@ -476,12 +603,7 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
                   <button
                     key={indicator.id}
                     className={`${styles.mobileControlButton} ${activeIndicators[indicator.id] ? styles.indicatorActive : ''}`}
-                    onClick={() => {
-                      setActiveIndicators(prev => ({
-                        ...prev,
-                        [indicator.id]: !prev[indicator.id]
-                      }));
-                    }}
+                    onClick={() => handleIndicatorToggle(indicator.id)}
                     disabled={isLoading}
                   >
                     {indicator.icon} {indicator.name}
@@ -495,14 +617,15 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
 
       {/* Quick Time Frame Bar at Bottom (Mobile Only) */}
       <div className={styles.quickTimeFrameBar}>
-        {['1m', '5m', '15m', '1h', '4h', '1D'].map(tf => (
+        {['1', '5', '15', '60', '240', '1D'].map(tf => (
           <button
             key={tf}
             className={`${styles.quickTimeButton} ${timeInterval === tf ? styles.active : ''}`}
-            onClick={() => setTimeInterval(tf)}
+            onClick={() => handleTimeIntervalChange(tf)}
             disabled={isLoading}
           >
-            {tf}
+            {tf === '1' ? '1m' : tf === '5' ? '5m' : tf === '15' ? '15m' : 
+             tf === '60' ? '1h' : tf === '240' ? '4h' : '1D'}
           </button>
         ))}
       </div>
