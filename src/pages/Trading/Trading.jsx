@@ -413,8 +413,8 @@ const Trading = () => {
 
                 {/* Center Panel - Chart */}
                 <div className={styles.centerPanel}>
-                    <div className={styles.chartContainer}>
-                        <TradingChart symbol={symbol} key={symbol} />
+                    <div className={styles.tradingChartWrapper}>
+                      <TradingChart symbol={symbol} key={symbol} />
                     </div>
 
                     {/* Recent Trades */}
