@@ -1,5 +1,5 @@
 /* ========================================= */
-/* TRADING MODULE - COMPLETE STYLESHEET */
+/* TRADING MODULE - FIXED (No Conflicts) */
 /* ========================================= */
 
 /* ===== VARIABLES ===== */
@@ -538,7 +538,8 @@
   gap: var(--space-md);
 }
 
-.chartContainer {
+/* ===== FIXED: CHANGED .chartContainer TO .tradingChartWrapper ===== */
+.tradingChartWrapper {
   flex: 1;
   min-height: 400px;
   background: var(--bg-glass);
@@ -1055,8 +1056,8 @@
     background: var(--bg-primary);
   }
   
-  /* Chart Container - Takes 70-75% of mobile screen */
-  .chartContainer {
+  /* FIXED: Updated to .tradingChartWrapper */
+  .tradingChartWrapper {
     flex: 3 !important;
     min-height: 0;
     max-height: 75vh;
@@ -1270,8 +1271,8 @@
     transform: scale(0.95);
   }
   
-  /* Chart Loading States */
-  .chartLoading {
+  /* Chart Loading States - FIXED: Renamed to avoid conflicts */
+  .chartLoadingState {
     position: absolute;
     top: 0;
     left: 0;
@@ -1301,8 +1302,8 @@
     text-align: center;
   }
   
-  /* Chart Error State */
-  .chartError {
+  /* Chart Error State - FIXED: Renamed to avoid conflicts */
+  .chartErrorState {
     position: absolute;
     top: 0;
     left: 0;
@@ -1426,7 +1427,7 @@
   
   /* Landscape optimization */
   @media (orientation: landscape) and (max-height: 500px) {
-    .chartContainer {
+    .tradingChartWrapper {
       height: 85vh !important;
       flex: 4 !important;
       max-height: 85vh;
@@ -1495,7 +1496,7 @@
 
 /* Small Mobile (≤ 480px) */
 @media (max-width: 480px) {
-  .chartContainer {
+  .tradingChartWrapper {
     height: 70vh !important;
     flex: 3.5 !important;
     max-height: 70vh;
@@ -1598,7 +1599,7 @@
   }
   
   @media (orientation: portrait) {
-    .chartContainer {
+    .tradingChartWrapper {
       height: 65vh !important;
     }
     
@@ -1610,7 +1611,7 @@
 
 /* Tablet Optimization (768px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .chartContainer {
+  .tradingChartWrapper {
     height: 65vh !important;
     min-height: 500px;
   }
@@ -1697,7 +1698,7 @@
 }
 
 /* Fullscreen Mode */
-.chartContainer.fullscreen {
+.tradingChartWrapper.fullscreen {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
@@ -1731,7 +1732,7 @@
 
 /* Safe Area Support */
 @supports (padding: max(0px)) {
-  .chartContainer {
+  .tradingChartWrapper {
     padding-top: max(var(--space-sm), env(safe-area-inset-top));
     padding-bottom: max(var(--space-sm), env(safe-area-inset-bottom));
   }
