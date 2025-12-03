@@ -1,59 +1,116 @@
+/* Optimized Login Page CSS */
+
+/* CSS Variables - Optimized for performance */
+:root {
+  /* Animation timings */
+  --anim-fast: 200ms ease;
+  --anim-medium: 300ms ease;
+  --anim-slow: 500ms ease;
+  
+  /* Z-index layers */
+  --z-background: -1;
+  --z-base: 1;
+  --z-overlay: 10;
+  --z-modal: 100;
+}
+
 .loginPage {
   min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background: var(--gradient-bg);
+  
+  /* Beautiful gradient background - optimized with hardware acceleration */
+  background: linear-gradient(
+    135deg,
+    #667eea 0%,
+    #764ba2 25%,
+    #f093fb 50%,
+    #f5576c 75%,
+    #f093fb 100%
+  );
+  background-attachment: fixed; /* For parallax effect on desktop */
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  
+  /* Optimize for GPU acceleration */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: background-position;
 }
 
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr);
   width: 100%;
-  max-width: 1400px;
-  min-height: 80vh;
+  max-width: min(1400px, 95vw);
+  min-height: min(80vh, 700px);
   position: relative;
-  z-index: 1;
+  z-index: var(--z-base);
   align-items: stretch;
-  background: var(--bg-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--bg-glass-light);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-glass);
+  
+  /* Glass effect - optimized */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  
+  /* Performance optimization */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  
+  margin: 20px;
   overflow: hidden;
-  margin: var(--space-2xl);
+  transition: all var(--anim-medium);
 }
 
 .previewSection {
-  padding: var(--space-2xl);
+  padding: clamp(1.5rem, 3vw, 3rem);
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  border-right: 1px solid var(--bg-glass-light);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  
+  /* Performance optimization */
+  contain: layout style paint;
 }
 
 .formSection {
-  padding: var(--space-2xl);
+  padding: clamp(1.5rem, 3vw, 3rem);
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
+  
+  /* Performance optimization */
+  contain: layout style paint;
 }
 
 .formContainer {
   width: 100%;
-  max-width: 500px;
+  max-width: min(500px, 100%);
   height: 100%;
   display: flex;
   align-items: center;
 }
 
 /* Remove individual borders from AuthForm and DashboardCard */
-:global(.authForm) {
+:global(.authForm),
+:global(.dashboardCard) {
   border: none !important;
   box-shadow: none !important;
   backdrop-filter: none !important;
@@ -61,63 +118,82 @@
   background: transparent !important;
   height: 100% !important;
   max-height: none !important;
+  width: 100% !important;
 }
 
-:global(.dashboardCard) {
-  border: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  background: transparent !important;
-}
-
-/* Background Orbs */
-.backgroundOrb1 {
+/* Background Orbs - Optimized for performance */
+.orbContainer {
   position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: var(--z-background);
+  pointer-events: none;
+  filter: url('#goo');
+}
+
+.backgroundOrb {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.08;
+  filter: blur(40px);
+  mix-blend-mode: screen;
+  animation: float var(--duration, 8s) ease-in-out infinite;
+  
+  /* Performance optimization */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.backgroundOrb1 {
   top: 10%;
   left: 10%;
-  width: 300px;
-  height: 300px;
-  background: var(--primary);
-  border-radius: 50%;
-  opacity: 0.05;
-  filter: blur(60px);
-  animation: float 8s ease-in-out infinite;
+  width: min(300px, 30vw);
+  height: min(300px, 30vw);
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  --duration: 8s;
 }
 
 .backgroundOrb2 {
-  position: absolute;
   bottom: 10%;
   right: 10%;
-  width: 400px;
-  height: 400px;
-  background: var(--secondary);
-  border-radius: 50%;
-  opacity: 0.05;
-  filter: blur(60px);
-  animation: float 12s ease-in-out infinite reverse;
+  width: min(400px, 40vw);
+  height: min(400px, 40vw);
+  background: linear-gradient(135deg, #f5576c, #f093fb);
+  --duration: 12s;
+  animation-direction: alternate;
 }
 
 .backgroundOrb3 {
-  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 500px;
-  height: 500px;
-  background: var(--accent);
-  border-radius: 50%;
-  opacity: 0.03;
-  filter: blur(80px);
-  animation: float 10s ease-in-out infinite;
+  width: min(500px, 50vw);
+  height: min(500px, 50vw);
+  background: linear-gradient(135deg, #764ba2, #667eea);
+  --duration: 10s;
+  animation-delay: -2s;
 }
 
-/* Responsive */
+/* SVG Filter for better blur performance */
+.svgFilters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+/* Responsive Design - Mobile First Approach */
 @media (max-width: 1024px) {
+  .loginPage {
+    background-attachment: scroll; /* Remove fixed background on mobile */
+  }
+  
   .container {
     grid-template-columns: 1fr;
-    margin: var(--space-xl);
-    min-height: auto;
+    max-width: min(600px, 95vw);
+    min-height: min(70vh, 600px);
+    margin: 15px;
   }
   
   .previewSection {
@@ -125,31 +201,162 @@
   }
   
   .formSection {
-    padding: var(--space-xl);
+    padding: clamp(1rem, 2.5vw, 2rem);
   }
   
-  .container {
-    min-height: 70vh;
+  .backgroundOrb {
+    filter: blur(30px); /* Reduced blur for mobile performance */
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
+  .loginPage {
+    align-items: flex-start;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  
   .container {
-    margin: var(--space-lg);
     min-height: auto;
+    border-radius: 20px;
   }
   
   .formSection {
-    padding: var(--space-lg);
+    padding: 1.5rem;
   }
   
   :global(.authForm) {
     height: auto !important;
-    min-height: 500px;
+    min-height: 400px;
+  }
+  
+  .backgroundOrb {
+    display: none; /* Hide orbs on very small screens for performance */
   }
 }
 
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .loginPage {
+    animation: none;
+    background-size: 100% 100%;
+  }
+  
+  .backgroundOrb,
+  .container {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .backgroundOrb {
+    filter: blur(20px);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+  
+  .backgroundOrb {
+    opacity: 0.1;
+    mix-blend-mode: lighten;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .container {
+    border: 2px solid currentColor;
+  }
+  
+  .backgroundOrb {
+    opacity: 0.15;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .loginPage {
+    background-attachment: scroll;
+  }
+  
+  .container {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+  
+  .backgroundOrb {
+    filter: blur(20px);
+  }
+}
+
+/* Animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0px) scale(1); }
-  50% { transform: translateY(-20px) scale(1.05); }
+  0%, 100% { 
+    transform: translateY(0) translateX(0) scale(1);
+  }
+  33% { 
+    transform: translateY(-20px) translateX(10px) scale(1.02);
+  }
+  66% { 
+    transform: translateY(10px) translateX(-10px) scale(0.98);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Loading state */
+.loginPage:global(.loading) .container {
+  opacity: 0.8;
+  filter: blur(2px);
+}
+
+/* Error state */
+.loginPage:global(.error) .container {
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+/* Print styles */
+@media print {
+  .loginPage {
+    background: white !important;
+    min-height: auto;
+  }
+  
+  .container {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    backdrop-filter: none !important;
+  }
+  
+  .backgroundOrb,
+  .orbContainer {
+    display: none !important;
+  }
 }
