@@ -41,6 +41,15 @@ const Login = () => {
 
   return (
     <div className={styles.loginPage}>
+      {/* Glass morphic shapes */}
+      <div className={styles.glassShape}></div>
+      <div className={styles.glassShape}></div>
+      
+      {/* Floating elements */}
+      <div className={styles.floatingElement}></div>
+      <div className={styles.floatingElement}></div>
+      <div className={styles.floatingElement}></div>
+      
       <div className={styles.container}>
         <div className={styles.previewSection}>
           <DashboardCard />
@@ -57,11 +66,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-      
-      {/* Background Orbs */}
-      <div className={styles.backgroundOrb1}></div>
-      <div className={styles.backgroundOrb2}></div>
-      <div className={styles.backgroundOrb3}></div>
     </div>
   )
 }
