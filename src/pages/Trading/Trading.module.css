@@ -1239,6 +1239,7 @@
 /* Loading States */
 .loadingContainer {
   display: flex;
+  background-color: #252936;
   flex-direction: column;
   align-items: center;
   justify-content: center;
