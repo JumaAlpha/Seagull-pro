@@ -20,30 +20,33 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
   const [showMobileControls, setShowMobileControls] = useState(false);
   const [scriptLoaded, setScriptLoaded] = useState(false);
 
+  // Time intervals - only labels, no icons
   const timeIntervals = [
-    { label: '1m', value: '1', icon: '🕐' },
-    { label: '5m', value: '5', icon: '🕐' },
-    { label: '15m', value: '15', icon: '🕐' },
-    { label: '30m', value: '30', icon: '🕐' },
-    { label: '1h', value: '60', icon: '🕒' },
-    { label: '4h', value: '240', icon: '🕓' },
-    { label: '1D', value: '1D', icon: '📅' },
-    { label: '1W', value: '1W', icon: '🗓️' },
+    { label: '1m', value: '1' },
+    { label: '5m', value: '5' },
+    { label: '15m', value: '15' },
+    { label: '30m', value: '30' },
+    { label: '1h', value: '60' },
+    { label: '4h', value: '240' },
+    { label: '1D', value: '1D' },
+    { label: '1W', value: '1W' },
   ];
 
+  // Chart types - only icons, no labels
   const chartTypes = [
-    { label: 'Candles', value: 'candlestick', icon: '📊', style: '1' },
-    { label: 'Line', value: 'line', icon: '📈', style: '2' },
-    { label: 'Area', value: 'area', icon: '📉', style: '3' },
-    { label: 'Bars', value: 'bars', icon: '📊', style: '0' },
+    { value: 'candlestick', icon: '📊' },
+    { value: 'line', icon: '📈' },
+    { value: 'area', icon: '📉' },
+    { value: 'bars', icon: '📊' },
   ];
 
+  // Indicators - only names, no icons
   const indicators = [
-    { id: 'BB', name: 'BB', icon: '📏', study: 'BB@tv-basicstudies' },
-    { id: 'RSI', name: 'RSI', icon: '📊', study: 'RSI@tv-basicstudies' },
-    { id: 'MACD', name: 'MACD', icon: '📈', study: 'MACD@tv-basicstudies' },
-    { id: 'Volume', name: 'Vol', icon: '📊', study: 'Volume@tv-basicstudies' },
-    { id: 'MA', name: 'MA', icon: '➖', study: 'MASimple@tv-basicstudies' },
+    { id: 'BB', name: 'BB', study: 'BB@tv-basicstudies' },
+    { id: 'RSI', name: 'RSI', study: 'RSI@tv-basicstudies' },
+    { id: 'MACD', name: 'MACD', study: 'MACD@tv-basicstudies' },
+    { id: 'Volume', name: 'Vol', study: 'Volume@tv-basicstudies' },
+    { id: 'MA', name: 'MA', study: 'MASimple@tv-basicstudies' },
   ];
 
   // Load TradingView script once
@@ -402,7 +405,7 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
       {/* Desktop Controls - Always visible */}
       <div className={styles.chartControlPanel}>
         <div className={styles.chartMainControls}>
-          {/* TIME Controls - Compact */}
+          {/* TIME Controls - Only labels */}
           <div className={styles.chartControlGroup}>
             <span className={styles.chartControlLabel}>TIME</span>
             <div className={styles.chartButtonGroup}>
@@ -414,14 +417,13 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
                   title={interval.label}
                   disabled={isLoading}
                 >
-                  <span className={styles.chartButtonIcon}>{interval.icon}</span>
                   <span className={styles.chartButtonText}>{interval.label}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* TYPE Controls - Compact */}
+          {/* TYPE Controls - Only icons */}
           <div className={styles.chartControlGroup}>
             <span className={styles.chartControlLabel}>TYPE</span>
             <div className={styles.chartButtonGroup}>
@@ -430,17 +432,16 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
                   key={type.value}
                   className={`${styles.chartIconButton} ${chartType === type.value ? styles.active : ''}`}
                   onClick={() => handleChartTypeChange(type.value)}
-                  title={type.label}
+                  title={type.value.charAt(0).toUpperCase() + type.value.slice(1)}
                   disabled={isLoading}
                 >
                   <span className={styles.chartButtonIcon}>{type.icon}</span>
-                  <span className={styles.chartButtonText}>{type.label}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* INDICATORS Controls - Compact */}
+          {/* INDICATORS Controls - Only names */}
           <div className={styles.chartControlGroup}>
             <span className={styles.chartControlLabel}>IND</span>
             <div className={styles.chartButtonGroup}>
@@ -452,7 +453,6 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
                   title={indicator.name}
                   disabled={isLoading}
                 >
-                  <span className={styles.chartButtonIcon}>{indicator.icon}</span>
                   <span className={styles.chartButtonText}>{indicator.name}</span>
                 </button>
               ))}
@@ -467,6 +467,7 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
         onClick={() => setShowMobileControls(!showMobileControls)}
         title="Show/Hide Controls"
         disabled={isLoading}
+        aria-label="Toggle mobile controls"
       >
         ⚙️
       </button>
@@ -541,7 +542,7 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
         />
       </div>
 
-      {/* Mobile Floating Controls */}
+      {/* Mobile Floating Controls - Now positioned as overlay above chart */}
       {showMobileControls && (
         <div className={styles.mobileFloatingControls}>
           <div className={styles.mobileControlsHeader}>
@@ -549,16 +550,17 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
             <button 
               className={styles.closeMobileControls}
               onClick={() => setShowMobileControls(false)}
+              aria-label="Close controls"
             >
               ✕
             </button>
           </div>
           
-          <div className={styles.mobileControlsGrid}>
-            {/* Time Interval Quick Select */}
+          <div className={styles.mobileControlsContent}>
+            {/* Time Interval Quick Select - Only labels */}
             <div className={styles.mobileControlSection}>
               <div className={styles.mobileControlLabel}>Time Frame</div>
-              <div className={styles.mobileButtonRow}>
+              <div className={styles.mobileTimeGrid}>
                 {timeIntervals.map(interval => (
                   <button
                     key={interval.value}
@@ -569,16 +571,16 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
                     }}
                     disabled={isLoading}
                   >
-                    {interval.label}
+                    <span className={styles.buttonLabel}>{interval.label}</span>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Chart Type Quick Select */}
+            {/* Chart Type Quick Select - Only icons */}
             <div className={styles.mobileControlSection}>
               <div className={styles.mobileControlLabel}>Chart Type</div>
-              <div className={styles.mobileButtonRow}>
+              <div className={styles.mobileChartTypeGrid}>
                 {chartTypes.map(type => (
                   <button
                     key={type.value}
@@ -589,16 +591,16 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
                     }}
                     disabled={isLoading}
                   >
-                    {type.icon}
+                    <span className={styles.buttonIcon}>{type.icon}</span>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Indicators Toggle */}
+            {/* Indicators Toggle - Only names */}
             <div className={styles.mobileControlSection}>
               <div className={styles.mobileControlLabel}>Indicators</div>
-              <div className={styles.mobileButtonGrid}>
+              <div className={styles.mobileIndicatorsGrid}>
                 {indicators.map(indicator => (
                   <button
                     key={indicator.id}
@@ -606,7 +608,7 @@ const TradingChart = ({ symbol = 'BTCUSDT', width = '100%', height = '100%' }) =
                     onClick={() => handleIndicatorToggle(indicator.id)}
                     disabled={isLoading}
                   >
-                    {indicator.icon} {indicator.name}
+                    <span className={styles.buttonLabel}>{indicator.name}</span>
                   </button>
                 ))}
               </div>

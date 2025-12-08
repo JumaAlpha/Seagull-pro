@@ -1,25 +1,4 @@
 /* ========================================= */
-/* TRADING CHART MODULE - COMPLETE */
-/* ========================================= */
-
-/* ===== VARIABLES ===== */
-:root {
-  --chart-bg-primary: #131722;
-  --chart-bg-secondary: #1a1e29;
-  --chart-bg-tertiary: #1e222d;
-  --chart-border: rgba(42, 46, 57, 0.8);
-  --chart-text-primary: #ffffff;
-  --chart-text-secondary: #758696;
-  --chart-text-tertiary: #a1a7bb;
-  --chart-primary: #2962ff;
-  --chart-primary-light: #64b5f6;
-  --chart-success: #10b981;
-  --chart-error: #ff6b6b;
-  --chart-gradient: linear-gradient(135deg, #0f131c 0%, #131722 100%);
-}
-
-/* ===== MAIN CONTAINER ===== */
-/* ========================================= */
 /* TRADING CHART MODULE - MOBILE OPTIMIZED */
 /* ========================================= */
 
@@ -146,13 +125,40 @@
   font-weight: 600;
 }
 
+/* ===== MOBILE CONTROLS TOGGLE ===== */
+.mobileControlsToggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  background: rgba(26, 30, 41, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--chart-text-primary);
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 20;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.mobileControlsToggle:hover {
+  background: rgba(42, 46, 57, 0.95);
+  transform: scale(1.05);
+}
+
 /* ===== CHART AREA ===== */
 .chartAreaWrapper {
   flex: 1;
   position: relative;
   background: #131722;
   overflow: hidden;
-  min-height: 0; /* Critical for flex child */
+  min-height: 0;
 }
 
 .tradingViewWidgetContainer {
@@ -166,45 +172,30 @@
   opacity: 0.3;
 }
 
-/* ===== MOBILE CONTROLS TOGGLE ===== */
-.mobileControlsToggle {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 32px;
-  height: 32px;
-  background: rgba(26, 30, 41, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--chart-text-primary);
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  z-index: 20;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(5px);
-}
-
-/* ===== MOBILE FLOATING CONTROLS ===== */
+/* ===== MOBILE FLOATING CONTROLS - IMPROVED ===== */
 .mobileFloatingControls {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(19, 23, 34, 0.98);
+  top: 50px;
+  right: 10px;
+  width: 90%;
+  max-width: 320px;
+  max-height: 70vh;
+  background: #00000039;
+  border: 1px solid rgba(42, 46, 57, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   z-index: 30;
   display: flex;
   flex-direction: column;
-  backdrop-filter: blur(10px);
-  animation: slideInUp 0.3s ease;
+  backdrop-filter: blur(20px);
+  animation: slideInDown 0.3s ease;
+  overflow: hidden;
 }
 
-@keyframes slideInUp {
+@keyframes slideInDown {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
@@ -212,27 +203,42 @@
   }
 }
 
+/* Close button position adjustment */
 .mobileControlsHeader {
-  padding: 16px;
-  background: #1a1e29;
+  padding: 14px 16px;
+  background: rgba(26, 30, 41, 0.95);
   border-bottom: 1px solid rgba(42, 46, 57, 0.8);
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-weight: 600;
   color: #ffffff;
+  font-size: 14px;
 }
 
 .closeMobileControls {
-  background: none;
-  border: none;
+  background: rgba(42, 46, 57, 0.5);
+  border: 1px solid rgba(117, 134, 150, 0.2);
   color: #a1a7bb;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
-  padding: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.mobileControlsGrid {
+.closeMobileControls:hover {
+  background: rgba(42, 46, 57, 0.8);
+  color: #ffffff;
+}
+
+/* Scrollable content area */
+.mobileControlsContent {
   flex: 1;
   overflow-y: auto;
   padding: 16px;
@@ -241,76 +247,119 @@
   gap: 20px;
 }
 
+/* Control sections with better spacing */
 .mobileControlSection {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .mobileControlLabel {
   color: #758696;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.mobileButtonRow {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.mobileButtonGrid {
+/* Time interval grid - 4 columns */
+.mobileTimeGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 6px;
 }
 
+/* Chart type grid - 4 columns */
+.mobileChartTypeGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+/* Indicators grid - 3 columns */
+.mobileIndicatorsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+/* Mobile control buttons - improved */
 .mobileControlButton {
-  padding: 8px 12px;
+  padding: 10px 8px;
   background: rgba(42, 46, 57, 0.6);
   border: 1px solid rgba(117, 134, 150, 0.2);
   color: #a1a7bb;
-  border-radius: 6px;
-  font-size: 13px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  white-space: nowrap;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 50px;
+  position: relative;
 }
 
 .mobileControlButton:hover {
   background: rgba(54, 60, 78, 0.8);
+  transform: translateY(-1px);
 }
 
 .mobileControlButton.active {
-  background: #2962ff;
+  background: linear-gradient(135deg, #2962ff 0%, #1e56ff 100%);
   border-color: #2962ff;
   color: #ffffff;
+  box-shadow: 0 2px 8px rgba(41, 98, 255, 0.3);
 }
 
 .mobileControlButton.indicatorActive {
-  background: rgba(41, 98, 255, 0.3);
-  border-color: rgba(41, 98, 255, 0.6);
+  background: rgba(41, 98, 255, 0.2);
+  border-color: rgba(41, 98, 255, 0.5);
   color: #64b5f6;
 }
 
-/* ===== QUICK TIME FRAME BAR (Mobile Bottom) ===== */
+.mobileControlButton.indicatorActive::after {
+  content: "✓";
+  font-size: 10px;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  color: #64b5f6;
+}
+
+/* Button icons */
+.buttonIcon {
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.buttonLabel {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ===== QUICK TIME FRAME BAR ===== */
 .quickTimeFrameBar {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
-  right: 10px;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
   display: flex;
   gap: 4px;
-  background: rgba(26, 30, 41, 0.9);
+  background: rgba(26, 30, 41, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 4px;
-  backdrop-filter: blur(10px);
-  z-index: 5;
+  border-radius: 10px;
+  padding: 6px;
+  backdrop-filter: blur(20px);
+  z-index: 15;
   overflow-x: auto;
   scrollbar-width: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: none;
 }
 
 .quickTimeFrameBar::-webkit-scrollbar {
@@ -323,21 +372,171 @@
   border: none;
   color: #a1a7bb;
   font-size: 11px;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-radius: 4px;
+  border-radius: 6px;
   white-space: nowrap;
   flex-shrink: 0;
+  min-width: 40px;
+  text-align: center;
+}
+
+.quickTimeButton:hover {
+  background: rgba(42, 46, 57, 0.6);
 }
 
 .quickTimeButton.active {
-  background: #2962ff;
+  background: linear-gradient(135deg, #2962ff 0%, #1e56ff 100%);
   color: white;
+  box-shadow: 0 2px 6px rgba(41, 98, 255, 0.3);
+}
+
+/* ===== PLACEHOLDER STATES ===== */
+.chartPlaceholderState {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #0f131c 0%, #131722 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.placeholderContentWrapper {
+  text-align: center;
+  padding: 24px;
+  max-width: 320px;
+  background: rgba(30, 34, 45, 0.8);
+  border-radius: 12px;
+  border: 1px solid rgba(42, 46, 57, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.chartLoadingSpinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 16px;
+}
+
+.spinnerCircle {
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top-color: #2962ff;
+  border-right-color: #2962ff;
+  border-radius: 50%;
+  animation: chartSpin 1s linear infinite;
+}
+
+@keyframes chartSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loadingProgressBar {
+  position: absolute;
+  bottom: -10px;
+  left: 10%;
+  right: 10%;
+  height: 4px;
+  background: rgba(42, 46, 57, 0.5);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.loadingProgressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #2962ff, #64b5f6);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.loadingPercentage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.chartErrorIcon {
+  font-size: 36px;
+  margin-bottom: 16px;
+  color: #ff6b6b;
+}
+
+.chartErrorIcon::before {
+  content: "⚠️";
+}
+
+.errorMessage {
+  color: #ff6b6b;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.chartRetrySection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.chartRetryButton {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #2962ff 0%, #1e56ff 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chartRetryButton:hover {
+  background: linear-gradient(135deg, #1e56ff 0%, #0d47ff 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(41, 98, 255, 0.3);
+}
+
+.chartRetryButtonSecondary {
+  padding: 10px 20px;
+  background: rgba(42, 46, 57, 0.8);
+  color: #a1a7bb;
+  border: 1px solid rgba(117, 134, 150, 0.2);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chartRetryButtonSecondary:hover {
+  background: rgba(54, 60, 78, 0.8);
+  color: #ffffff;
+}
+
+.loadingDetails {
+  margin-top: 12px;
+}
+
+.loadingDetail {
+  color: #758696;
+  font-size: 12px;
+  font-style: italic;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
 
-/* Desktop: Show full controls */
+/* Desktop */
 @media (min-width: 1025px) {
   .chartControlPanel {
     height: 52px;
@@ -352,7 +551,7 @@
   }
 }
 
-/* Tablet: Show compact controls */
+/* Tablet */
 @media (max-width: 1024px) and (min-width: 769px) {
   .chartControlPanel {
     height: 48px;
@@ -380,106 +579,70 @@
   }
 }
 
-/* Mobile: Hide desktop controls, show toggle */
+/* Mobile */
 @media (max-width: 768px) {
   .chartControlPanel {
-    display: none; /* Hide desktop controls on mobile */
+    display: none;
   }
   
   .mobileControlsToggle {
-    display: flex; /* Show mobile toggle button */
+    display: flex;
   }
   
   .quickTimeFrameBar {
-    display: flex; /* Show quick time bar */
+    display: flex;
   }
   
-  /* Make chart area take maximum space */
   .chartAreaWrapper {
-    height: calc(100% - 40px); /* Account for quick time bar */
+    height: calc(100% - 50px);
   }
 }
 
-/* Small Mobile: Further optimization */
+/* Small Mobile */
 @media (max-width: 480px) {
+  .mobileControlsToggle {
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  
+  .mobileFloatingControls {
+    top: 45px;
+    right: 8px;
+    max-height: 60vh;
+  }
+  
   .quickTimeFrameBar {
-    bottom: 5px;
-    left: 5px;
-    right: 5px;
-    padding: 3px;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    padding: 4px;
   }
   
   .quickTimeButton {
-    padding: 5px 8px;
+    min-width: 36px;
     font-size: 10px;
   }
   
-  .mobileControlsToggle {
-    top: 5px;
-    right: 5px;
-    width: 28px;
-    height: 28px;
+  .mobileControlButton {
+    min-height: 45px;
+    padding: 8px 4px;
+  }
+  
+  .buttonIcon {
     font-size: 14px;
+  }
+  
+  .buttonLabel {
+    font-size: 10px;
   }
 }
 
-/* ===== PLACEHOLDER STATES (Keep from previous) ===== */
-.chartPlaceholderState {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, #0f131c 0%, #131722 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-.placeholderContentWrapper {
-  text-align: center;
-  padding: 24px;
-  max-width: 320px;
-  background: rgba(30, 34, 45, 0.8);
-  border-radius: 12px;
-  border: 1px solid rgba(42, 46, 57, 0.5);
-  backdrop-filter: blur(10px);
-}
-
-.chartLoadingSpinner {
-  width: 36px;
-  height: 36px;
-  border: 3px solid transparent;
-  border-top-color: #2962ff;
-  border-right-color: #2962ff;
-  border-radius: 50%;
-  margin: 0 auto 16px;
-  animation: chartSpin 1s linear infinite;
-}
-
-@keyframes chartSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.chartErrorIcon {
-  font-size: 36px;
-  margin-bottom: 16px;
-  color: #ff6b6b;
-}
-
-.chartRetrySection {
-  margin: 16px 0;
-}
-
-.chartRetryButton {
-  padding: 8px 20px;
-  background: linear-gradient(135deg, #2962ff 0%, #1e56ff 100%);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
+/* Large Mobile */
+@media (max-width: 768px) and (min-height: 700px) {
+  .mobileFloatingControls {
+    max-height: 75vh;
+  }
 }
