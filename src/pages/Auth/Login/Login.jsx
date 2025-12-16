@@ -6,30 +6,56 @@ import styles from './Login.module.css'
 
 const Login = () => {
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const navigate = useNavigate()
 
   const handleLogin = async (formData) => {
     setLoading(true)
+    setError('')
     
     // Simulate API call
     try {
       console.log('Login attempt:', formData)
       
       // TODO: Replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await new Promise(resolve => setTimeout(resolve, 1000))
       
-      // Simulate successful login
+      // Check if user has registered
+      const registrationDetails = localStorage.getItem('registrationDetails')
+      
+      if (!registrationDetails) {
+        throw new Error('No account found. Please register first.')
+      }
+      
+      const userData = JSON.parse(registrationDetails)
+      
+      // Check if credentials match
+      if (userData.email !== formData.email || userData.password !== formData.password) {
+        throw new Error('Invalid email or password')
+      }
+      
+      // Store user details in localStorage for session
       localStorage.setItem('token', 'simulated-jwt-token')
       localStorage.setItem('user', JSON.stringify({
-        email: formData.email,
-        firstName: 'John', // In real app, this would come from backend
-        lastName: 'Doe'
+        email: userData.email,
+        firstName: userData.firstName,
+        lastName: userData.lastName
       }))
       
-      navigate('/dashboard')
+      // Update last login time
+      localStorage.setItem('loginCredentials', JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+        lastLogin: new Date().toISOString()
+      }))
+      
+      console.log('Login successful, user details retrieved from registration')
+      
+      // Navigate to /trading as requested
+      navigate('/trading')
     } catch (error) {
       console.error('Login error:', error)
-      // Handle error (show toast/notification)
+      setError(error.message)
     } finally {
       setLoading(false)
     }
@@ -62,6 +88,7 @@ const Login = () => {
               onSubmit={handleLogin}
               loading={loading}
               switchMode={switchToRegister}
+              error={error}
             />
           </div>
         </div>
