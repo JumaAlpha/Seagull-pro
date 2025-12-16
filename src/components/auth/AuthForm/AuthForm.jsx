@@ -3,7 +3,7 @@ import Input from '../../ui/Input/Input'
 import Button from '../../ui/Button/Button'
 import styles from './AuthForm.module.css'
 
-const AuthForm = ({ mode = 'login', onSubmit, loading = false, switchMode }) => {
+const AuthForm = ({ mode = 'login', onSubmit, loading = false, switchMode, error }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -164,6 +164,12 @@ const AuthForm = ({ mode = 'login', onSubmit, loading = false, switchMode }) => 
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    
+    // Show error from parent component if exists
+    if (error) {
+      return
+    }
+    
     if (mode === 'login') {
       // For login, just validate and submit
       const loginErrors = {}
@@ -182,10 +188,11 @@ const AuthForm = ({ mode = 'login', onSubmit, loading = false, switchMode }) => 
       }
     } else {
       // For registration, handle steps
-      if (validateStep(currentStep)) {
-        if (currentStep < 4) {
-          nextStep()
-        } else {
+      if (currentStep < 4) {
+        nextStep()
+      } else {
+        // On last step, validate and submit
+        if (validateStep(currentStep)) {
           onSubmit(formData)
         }
       }
@@ -211,6 +218,12 @@ const AuthForm = ({ mode = 'login', onSubmit, loading = false, switchMode }) => 
     if (mode === 'login') {
       return (
         <div className={styles.loginForm}>
+          {/* Show error from parent component */}
+          {error && (
+            <div className={styles.formError}>
+              {error}
+            </div>
+          )}
           <Input
             label="Email Address"
             type="email"
@@ -235,6 +248,13 @@ const AuthForm = ({ mode = 'login', onSubmit, loading = false, switchMode }) => 
 
     return (
       <div className={styles.sliderContainer}>
+        {/* Show error from parent component */}
+        {error && (
+          <div className={styles.formError}>
+            {error}
+          </div>
+        )}
+        
         <div 
           className={`${styles.slider} ${styles[slideDirection]}`}
           style={{ transform: `translateX(-${(currentStep - 1) * 25}%)` }}
@@ -482,7 +502,7 @@ const AuthForm = ({ mode = 'login', onSubmit, loading = false, switchMode }) => 
           type="submit"
           variant="primary"
           size="large"
-          loading={loading && currentStep === 4}
+          loading={loading}
           className={styles.nextButton}
           disabled={loading}
         >
@@ -518,7 +538,7 @@ const AuthForm = ({ mode = 'login', onSubmit, loading = false, switchMode }) => 
         </h1>
         <p className={styles.subtitle}>
           {mode === 'login' 
-            ? 'Sign in to your Seagull-Pro account to start trading'
+            ? 'Sign in to your account to start trading'
             : getStepSubtitle()
           }
         </p>
@@ -553,6 +573,7 @@ const AuthForm = ({ mode = 'login', onSubmit, loading = false, switchMode }) => 
             onClick={() => {
               setCurrentStep(1)
               setSlideDirection('right')
+              setErrors({})
               switchMode()
             }}
             className={styles.footerLink}
