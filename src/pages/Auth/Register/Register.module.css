@@ -5,43 +5,46 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background: var(--gradient-bg);
+  padding: 32px;
+  background:
+    radial-gradient(ellipse at 16% 8%, rgba(26, 115, 232, 0.22), transparent 38%),
+    radial-gradient(ellipse at 88% 92%, rgba(0, 200, 83, 0.09), transparent 32%),
+    #0b1120;
 }
 
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(380px, 0.9fr);
   width: 100%;
-  max-width: 1400px;
-  min-height: 80vh;
+  max-width: 1280px;
+  min-height: min(820px, calc(100vh - 64px));
   position: relative;
   z-index: 1;
   align-items: stretch;
-  background: var(--bg-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--bg-glass-light);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-glass);
+  background: rgba(17, 25, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 24px;
+  box-shadow: 0 32px 100px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   overflow: hidden;
-  margin: var(--space-2xl);
 }
 
 .previewSection {
-  padding: var(--space-2xl);
+  padding: clamp(28px, 4vw, 56px);
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  border-right: 1px solid var(--bg-glass-light);
+  border-right: 1px solid rgba(148, 163, 184, 0.12);
+  background: linear-gradient(145deg, rgba(20, 35, 59, 0.64), rgba(12, 19, 33, 0.4));
 }
 
 .formSection {
-  padding: var(--space-2xl);
+  padding: clamp(28px, 4vw, 56px);
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
+  background: rgba(8, 14, 25, 0.28);
 }
 
 .formContainer {
@@ -71,7 +74,6 @@
   background: transparent !important;
 }
 
-/* Background Orbs */
 .backgroundOrb1 {
   position: absolute;
   top: 10%;
@@ -80,9 +82,9 @@
   height: 300px;
   background: var(--primary);
   border-radius: 50%;
-  opacity: 0.05;
-  filter: blur(60px);
-  animation: float 8s ease-in-out infinite;
+  opacity: 0.12;
+  filter: blur(72px);
+  pointer-events: none;
 }
 
 .backgroundOrb2 {
@@ -91,11 +93,11 @@
   right: 10%;
   width: 400px;
   height: 400px;
-  background: var(--secondary);
+  background: #00c853;
   border-radius: 50%;
-  opacity: 0.05;
-  filter: blur(60px);
-  animation: float 12s ease-in-out infinite reverse;
+  opacity: 0.1;
+  filter: blur(72px);
+  pointer-events: none;
 }
 
 .backgroundOrb3 {
@@ -105,19 +107,22 @@
   transform: translate(-50%, -50%);
   width: 500px;
   height: 500px;
-  background: var(--accent);
+  background: #4fc3f7;
   border-radius: 50%;
-  opacity: 0.03;
+  opacity: 0.04;
   filter: blur(80px);
-  animation: float 10s ease-in-out infinite;
+  pointer-events: none;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
+  .registerPage {
+    padding: 16px;
+  }
+
   .container {
     grid-template-columns: 1fr;
-    margin: var(--space-xl);
     min-height: auto;
+    max-width: 560px;
   }
   
   .previewSection {
@@ -125,31 +130,23 @@
   }
   
   .formSection {
-    padding: var(--space-xl);
-  }
-  
-  .container {
-    min-height: 70vh;
+    padding: 32px 24px;
   }
 }
 
 @media (max-width: 768px) {
   .container {
-    margin: var(--space-lg);
-    min-height: auto;
-  }
-  
-  .formSection {
-    padding: var(--space-lg);
+    border-radius: 16px;
   }
   
   :global(.authForm) {
     height: auto !important;
-    min-height: 500px;
+    min-height: 0;
   }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px) scale(1); }
-  50% { transform: translateY(-20px) scale(1.05); }
+@media (prefers-reduced-motion: reduce) {
+  .backgroundOrb3 {
+    transform: translate(-50%, -50%);
+  }
 }

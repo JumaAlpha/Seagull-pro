@@ -16,6 +16,9 @@
   --bg-tertiary: #222d45;      /* Tertiary/alternating rows */
   --bg-card: rgba(26, 34, 54, 0.9); /* Card backgrounds */
   --bg-toolbar: #1e2a44;       /* Toolbar/header background */
+  --bg-glass: rgba(26, 34, 54, 0.82);
+  --bg-glass-light: rgba(255, 255, 255, 0.08);
+  --gradient-bg: #0b1120;
   
   /* Chart/Grid Specific */
   --grid-line: rgba(56, 68, 100, 0.5);      /* Grid lines */
@@ -57,6 +60,7 @@
   --radius-md: 6px;            /* Buttons, inputs */
   --radius-lg: 8px;            /* Cards, panels */
   --radius-xl: 12px;           /* Modals, dialogs */
+  --radius-2xl: 20px;
   
   /* Spacing */
   --space-xs: 2px;             /* Chart elements spacing */
@@ -65,6 +69,9 @@
   --space-lg: 12px;            /* Large padding */
   --space-xl: 16px;            /* Extra large */
   --space-2xl: 24px;           /* Section spacing */
+  --space-3xl: 40px;
+
+  --shadow-glass: 0 24px 80px rgba(0, 0, 0, 0.38);
   
   /* Typography - Monospaced for numbers */
   --font-family: 'Roboto', 'Segoe UI', sans-serif;
